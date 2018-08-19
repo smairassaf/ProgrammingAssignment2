@@ -9,6 +9,7 @@ makeCacheMatrix <- function(x = matrix()) {
         changed <<- TRUE
     }
     get <- function() x
+    # to chekc if set was called and matrix was changed, then cached value will be wrong.
     ischanged <- function() changed
     setinverse <- function(inverse) { inv <<- inverse 
     changed <<- FALSE }
@@ -23,6 +24,7 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+    # check if matrix wasn't changed
     if(x$ischanged() == FALSE) {
         inv <- x$getinverse()
         if(!is.null(inv)) {
@@ -30,6 +32,7 @@ cacheSolve <- function(x, ...) {
             return(inv)
         }
     }
+    # if matrix was changed or there is no chached inverse
     data <- x$get()
     inv <- solve(data, ...)
     x$setinverse(inv)
